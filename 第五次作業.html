@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+</head>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="piechart" style="width: 900px; height: 500px;"></div>
+<script>
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+function drawChart(){
+var data = google.visualization.arrayToDataTable([
+['Task', 'cost'],
+['Shop', 619], ['Eat', 4513], ['doctor', 400], ['traffic', 301], ['live', 90]
+]);
+
+var options = {
+    title: 'My expenses last month',
+    is3D: true
+};
+var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+chart.draw(data, options);
+}
+</script>
+<body>
+
+</body>
