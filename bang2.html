@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+    var obj = document.createElement("audio");
+    obj.src = "DDD.ogg";
+    obj.volume = 1;
+    obj.autoPlay = true;
+    $("p").on('click',function(event){
+        obj.play();
+    });
+    $("p").trigger('click');
+});
+</script>
+<style>
+*{margin: 0px; box-sizing: border-box;}
+    body{
+        background-image:url("RRR.gif");
+    }
+    div{
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+        font-size: 100px;
+        width: max-content;
+        padding: 10px;
+        border: 10px dashed rgb(234, 149, 88);
+        background-color:rgb(99, 89, 51);
+        font-weight: bold;
+    }
+</style>
+<body>
+    <div>
+    <p>你不在啵了！！！</p>
+    </div>
+</body>
+</html>
