@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 03 足球數據分析 — 題目整理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --green: #3fb950;
+    --green-dim: #1a4a28;
+    --red: #f85149;
+    --red-dim: #4a1a1a;
+    --accent: #58a6ff;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --code-bg: #0d1117;
+    --num-bg: #1f6feb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    min-height: 100vh;
+    padding: 40px 24px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .dot.correct { background: var(--green); }
+  .dot.wrong { background: var(--red); }
+
+  .table-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--surface2);
+  }
+
+  thead th {
+    padding: 14px 18px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th:first-child { width: 60px; text-align: center; }
+  thead th:nth-child(2) { width: 36%; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr.wrong-row { background: rgba(248,81,73,0.04); }
+  tbody tr.wrong-row:hover { background: rgba(248,81,73,0.08); }
+
+  td {
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    vertical-align: top;
+  }
+
+  td:first-child {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--num-bg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .wrong-row .num { background: var(--red); }
+
+  .status {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 0.7rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .tag-wrong {
+    background: var(--red-dim);
+    color: var(--red);
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: #79c0ff;
+    display: inline-block;
+    line-height: 1.5;
+  }
+
+  .answer-cell {
+    color: var(--text);
+  }
+
+  .correct-badge {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 6px;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .wrong-badge {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    margin-right: 6px;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .answer-wrap {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 32px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Week 03 足球數據分析 — 題目總整理</h1>
+  <p>共 27 題 · 4 題答錯 · 23 題答對</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot correct"></div>答對</div>
+  <div class="legend-item"><div class="dot wrong"></div>答錯（已訂正）</div>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>題目</th>
+      <th>正確答案</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td><span class="num">1</span></td>
+      <td>足球分析公司整體分析流程最符合 Week 03 完整學習內容？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>建立 outcome_map 字典 → np.where 編碼顏色 xG 泡泡圖 → 計算射門距離（特徵工程）→ pd.cut 分箱距離 vs 進球率 → bin_statistic 熱區圖（count 看頻率、mean 看品質）→ 產出綜合報告</span></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">2</span></td>
+      <td>球探部門計算每次射門到球門中心 (120, 40) 的距離，正確實現歐幾里得距離公式？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>shots['distance'] = np.sqrt((shots.x - 120)**2 + (shots.y - 40)**2)</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">3</span></td>
+      <td>為什麼要用 pd.cut 分箱，而不直接對 distance 做線性分析？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>分箱後能以「長條圖」直觀比較不同距離區間的進球率，幫助教練快速理解數據；若直接用連續變數，需要更複雜的統計模型</span></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">4</span></td>
+      <td>BI 工程師要把射門距離切成四個區間 [0-10, 10-20, 20-30, 30-40] 來分析？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>df['dist_bin'] = pd.cut(df['distance'], bins=[0,10,20,30,40])</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">5</span></td>
+      <td>分析師要將布林欄位 (outcome_name == 'Goal') 轉成 0/1 數值？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>df['is_goal'] = (df['outcome_name'] == 'Goal').astype(int)</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">6</span></td>
+      <td>在 pitch.scatter() 中，哪個參數控制散點的「形狀」（圓、方、叉）？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>marker</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">7</span></td>
+      <td>分析師比較兩種熱區圖的意義，下列何者正確？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>count 熱區圖顯示射門「次數」（哪裡射最多）；mean 熱區圖顯示射門「質量」（哪裡的機會最好）</span></div></td>
+    </tr>
+
+    <tr class="wrong-row">
+      <td><span class="num">8</span></td>
+      <td>數據視覺化核心概念「多維編碼」，xG 氣泡圖一共編碼了幾個維度？<span class="status tag-wrong">已訂正</span></td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="wrong-badge"></span><span>4 個維度（位置 x + 位置 y + 顏色 + 大小）</span></div></td>
+    </tr>
+
+    <tr class="wrong-row">
+      <td><span class="num">9</span></td>
+      <td>教練想用「氣泡大小」表達每次射門的 xG（xG 介於 0～1），哪段程式最合適？<span class="status tag-wrong">已訂正</span></td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="wrong-badge"></span><code>s=shots.shot_statsbomb_xg * 800</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">10</span></td>
+      <td>GOAL_CENTER = (120, 40) 是什麼資料結構？為什麼這樣寫？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>元組（tuple），不可變常數，適合存放固定的球門座標</span></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">11</span></td>
+      <td>繪製多類別射門圖後，哪段程式碼可以自動產生圖例（legend）？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>ax.legend()</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">12</span></td>
+      <td>距離 0-10 公尺進球率 0.35、10-20 公尺 0.12、20-30 公尺 0.04、30-40 公尺 0.02，戰術解讀？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>距離越近進球率越高，應爭取在禁區內創造射門機會</span></div></td>
+    </tr>
+
+    <tr class="wrong-row">
+      <td><span class="num">13</span></td>
+      <td>要繪製熱區圖並選用「紅色系」色彩，哪個 cmap 參數正確？<span class="status tag-wrong">已訂正</span></td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="wrong-badge"></span><code>cmap='Reds'</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">14</span></td>
+      <td>分析師想建立布林欄位 close_shot，標示距離 &lt; 15 的射門？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>shots['close_shot'] = shots['distance'] &lt; 15</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">15</span></td>
+      <td>分析師在迴圈中要篩選出特定結果的射門資料？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>sub = shots_france[shots_france['outcome_name'] == outcome]</code></div></td>
+    </tr>
+
+    <tr class="wrong-row">
+      <td><span class="num">16</span></td>
+      <td>教練希望熱區圖上直接標註每格的「射門次數」，哪個 mplsoccer 方法可以達成？<span class="status tag-wrong">已訂正</span></td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="wrong-badge"></span><code>pitch.annotate_heatmap()</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">17</span></td>
+      <td>資料視覺化總監要為梅西製作「射門熱區圖」，將球場切成 5×4 網格統計每格射門次數？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>stats = pitch.bin_statistic(messi.x, messi.y, statistic='count', bins=(5,4))</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">18</span></td>
+      <td>為了讓氣泡在深色球場上更清楚，教練建議加「黑色邊框」和「半透明」效果？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>pitch.scatter(x, y, s=..., c=colors, edgecolors='black', linewidth=1.5, alpha=0.8, ax=ax)</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">19</span></td>
+      <td>在 pitch.scatter() 中，下列哪組參數的對應「正確」？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>s=..., c=..., edgecolors=...</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">20</span></td>
+      <td>教練助理想用迴圈遍歷 outcome_map 字典，為三類射門結果各自繪製散點圖？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>for outcome, style in outcome_map.items():</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">21</span></td>
+      <td>哪個 Python 資料結構最適合儲存三類射門結果的視覺化樣式（顏色、marker）？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>字典 dict：<code>{'Goal': {'color': 'lime', 'marker': 'o'}, 'Saved': {...}, 'Blocked': {...}}</code></span></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">22</span></td>
+      <td>資料科學家問：bins=(5, 4) 中的 5 和 4 分別代表什麼？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>5 是水平方向（x 軸）的格數，4 是垂直方向（y 軸）的格數，總共 20 格</span></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">23</span></td>
+      <td>行銷部門要把進球用金色（gold）、未進球用藍色（dodgerblue）來呈現？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>colors = np.where(shots['outcome_name']=='Goal', 'gold', 'dodgerblue')</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">24</span></td>
+      <td>資料科學總監問：為什麼要特地新增 distance 和 close_shot 這兩個欄位？原始 x、y 不就夠了嗎？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><span>這叫「特徵工程」，將原始座標轉換為更具戰術意義的新特徵（距離、是否近射）後，機器學習模型或統計分析更容易找出規律</span></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">25</span></td>
+      <td>資料科學總監要製作「平均 xG 熱區圖」：每格顯示該區的平均 xG 而非射門次數？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>stats = pitch.bin_statistic(x, y, values=shots.shot_statsbomb_xg, statistic='mean', bins=(4,3))</code></div></td>
+    </tr>
+
+    <tr class="wrong-row">
+      <td><span class="num">26</span></td>
+      <td>在 pitch.label_heatmap() 中，哪個參數可以將數字格式化為「兩位小數」？<span class="status tag-wrong">已訂正</span></td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="wrong-badge"></span><code>format='{:.2f}'</code></div></td>
+    </tr>
+
+    <tr>
+      <td><span class="num">27</span></td>
+      <td>要計算「每個距離區間的進球率」？</td>
+      <td class="answer-cell"><div class="answer-wrap"><span class="correct-badge"></span><code>goal_rate = df.groupby('dist_bin')['is_goal'].mean()</code></div></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<footer>Week 03 · 足球數據分析 · 答對 23／27</footer>
+
+</body>
+</html>
